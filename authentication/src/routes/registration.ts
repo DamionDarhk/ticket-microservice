@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
-import {InternalServerError} from '../errors/internalServerError';
-import {RequestValidationError} from '../errors/requestValidationError';
+import { InternalServerError } from '../errors/internalServerError';
+import { RequestValidationError } from '../errors/requestValidationError';
 
 const router = express.Router();
 
