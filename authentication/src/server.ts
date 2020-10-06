@@ -8,6 +8,8 @@ import { registrationRoute } from './routes/registration';
 import { errorHandler } from './middlewares/errorHandler';
 import { NotFoundError } from './errors/notFoundError';
 
+import mongoose from 'mongoose';
+
 const app = express();
 
 app.use(json());
@@ -23,6 +25,21 @@ app.all('*', async () => {
 
 app.use(errorHandler);
 
-app.listen(1000, () => {
-  console.info('Listening on port number: 1000');
-});
+const startApplication = async () => {
+  try {
+    await mongoose.connect('mongodb://authentication-mongodb-srv:27017/authentication', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    });
+    mongoose.set('debug', true);
+  } catch (error) {
+    console.error('MongoDB Connection Error: ', error);
+  }
+
+  app.listen(1000, () => {
+    console.info('Listening on port number: 1000');
+  });
+};
+
+startApplication();
