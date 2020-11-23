@@ -37,17 +37,17 @@ app.all('*', () => {
 
 app.use(errorHandler);
 
-const startApplication = () => {
-  // try {
-  //   await mongoose.connect('mongodb://authentication-mongodb-srv:27017/authentication', {
-  //     useNewUrlParser: true,
-  //     useUnifiedTopology: true,
-  //     useCreateIndex: true,
-  //   });
-  //   mongoose.set('debug', true);
-  // } catch (error) {
-  //   console.error('MongoDB Connection Error: ', error);
-  // }
+const startApplication = async () => {
+  try {
+    await mongoose.connect('mongodb://authentication-mongodb-srv:27017/authentication', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    });
+    mongoose.set('debug', true);
+  } catch (error) {
+    console.error('MongoDB Connection Error: ', error);
+  }
 
   app.listen(1000, () => {
     console.info('Listening on port number: 1000');
