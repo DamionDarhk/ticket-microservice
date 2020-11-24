@@ -54,6 +54,10 @@ app.all('*', () => {
 app.use(errorHandler);
 
 const startApplication = async () => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error('Env. var. JWT_SECRET missing');
+  }
+
   try {
     await mongoose.connect('mongodb://authentication-mongodb-srv:27017/authentication', {
       useNewUrlParser: true,

@@ -4,8 +4,9 @@ import jwt from 'jsonwebtoken';
 import { RequestValidationError } from '../errors/requestValidationError';
 import { User } from '../models/user';
 import { BadRequestError } from '../errors/badRequestError';
+import { InternalServerError } from '../errors/internalServerError';
 
-const JWT_SECRET = '12sdasdasd2324dsdfdfgdvdfg#!@!@#sdsdsd';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const router = express.Router();
 
@@ -35,6 +36,10 @@ router.post(
 
     const user = User.build({ email, password });
     await user.save();
+
+    if (!JWT_SECRET) {
+      throw new InternalServerError();
+    }
 
     //generate JWT
     const userJwt = jwt.sign(
