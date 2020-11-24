@@ -3,7 +3,8 @@ import express from 'express';
 const router = express.Router();
 
 router.post('/api/users/logout', (req, res) => {
-  res.send({ message: 'Hello TypeScript' });
+  req.session = null;
+  res.send({ message: 'User loggout successfully' });
 });
 
 export { router as logoutRoute };

@@ -27,16 +27,29 @@ interface UserDocument extends mongoose.Document {
   password: string;
 }
 
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String, //here we are using capital String because are refering to build-in constructor that is available inside javascript
-    required: true,
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String, //here we are using capital String because are refering to build-in constructor that is available inside javascript
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
-  password: {
-    type: String,
-    required: true,
+  //directly changing the output of object
+  {
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.password;
+      },
+    },
+    versionKey: false,
   },
-});
+);
 
 userSchema.pre('save', async function (done) {
   if (this.isModified('password')) {

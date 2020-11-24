@@ -5,6 +5,7 @@ import { RequestValidationError } from '../errors/requestValidationError';
 import { User } from '../models/user';
 import { BadRequestError } from '../errors/badRequestError';
 import { InternalServerError } from '../errors/internalServerError';
+import { validationRequest } from '../middlewares/validateRequest';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -17,14 +18,15 @@ router.post(
     body('password')
       .trim()
       .isLength({ min: 4, max: 20 })
-      .withMessage('Password must be between 4 & 20 chars'),
+      .withMessage('Password must be between 4 & 20 chars.'),
   ],
+  validationRequest,
   async (req: Request, res: Response) => {
     const { email, password } = req.body;
-    const error = validationResult(req);
-    if (!error.isEmpty()) {
-      throw new RequestValidationError(error.array());
-    }
+    // const error = validationResult(req);
+    // if (!error.isEmpty()) {
+    //   throw new RequestValidationError(error.array());
+    // }
 
     const existingUser = await User.findOne({ email });
 
