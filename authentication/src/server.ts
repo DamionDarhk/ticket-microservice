@@ -1,6 +1,7 @@
 import express from 'express';
 require('express-async-errors');
 import { json } from 'body-parser';
+import cookieSession from 'cookie-session';
 import { currentUserRoute } from './routes/currentUser';
 import { loginRoute } from './routes/login';
 import { logoutRoute } from './routes/logout';
@@ -13,18 +14,33 @@ import mongoose from 'mongoose';
 
 const app = express();
 
-morgan.token("localDate", function getDate() {
-  let date = new Date();
-  return date.toLocaleString("en-US", { timeZone: "Asia/Kolkata" });
+//add to trust https request being proxied over ingress-nginx
+app.set('trust proxy', true);
+
+morgan.token('localDate', function getDate() {
+  const date = new Date();
+  return date.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
 });
 
 app.use(
   morgan(
-    ':remote-addr - :remote-user [:localDate]] ":method :url HTTP/:http-version" :status :req[body] :res[content-length] ":referrer" ":user-agent"'
-  )
+    ':remote-addr - :remote-user [:localDate]] ":method :url HTTP/:http-version" :status :req[body] :res[content-length] ":referrer" ":user-agent"',
+  ),
 );
 
 app.use(json());
+
+/**
+ * @signed false: disable encryption in cookie body, as JWT is used inside an cookie
+ * and it's already encrypted
+ * @secure true: use cookie only when https connection is used
+ */
+app.use(
+  cookieSession({
+    signed: false,
+    secure: true,
+  }),
+);
 
 app.use(currentUserRoute);
 app.use(loginRoute);

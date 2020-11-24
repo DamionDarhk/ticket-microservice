@@ -1,8 +1,11 @@
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
+import jwt from 'jsonwebtoken';
 import { RequestValidationError } from '../errors/requestValidationError';
 import { User } from '../models/user';
 import { BadRequestError } from '../errors/badRequestError';
+
+const JWT_SECRET = '12sdasdasd2324dsdfdfgdvdfg#!@!@#sdsdsd';
 
 const router = express.Router();
 
@@ -32,6 +35,22 @@ router.post(
 
     const user = User.build({ email, password });
     await user.save();
+
+    //generate JWT
+    const userJwt = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+      },
+      JWT_SECRET,
+    );
+
+    //Store JWT in cookie session
+    req.session = {
+      jwt: userJwt,
+    };
+
+    console.log('JWT Cookie Set');
 
     return res.send({ message: 'Email registered', user });
   },
