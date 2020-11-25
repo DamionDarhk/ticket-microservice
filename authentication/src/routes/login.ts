@@ -8,8 +8,6 @@ import { BadRequestError } from '../errors/badRequestError';
 import { Password } from '../utils/password';
 import { InternalServerError } from '../errors/internalServerError';
 
-const JWT_SECRET = process.env.JWT_SECRET;
-
 const router = express.Router();
 
 router.post(
@@ -21,6 +19,7 @@ router.post(
   validationRequest,
   async (req: Request, res: Response) => {
     const { email, password } = req.body;
+    const JWT_SECRET = process.env.JWT_SECRET;
 
     const existingUser = await User.findOne({ email });
 

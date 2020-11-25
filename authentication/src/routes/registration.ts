@@ -7,8 +7,6 @@ import { BadRequestError } from '../errors/badRequestError';
 import { InternalServerError } from '../errors/internalServerError';
 import { validationRequest } from '../middlewares/validateRequest';
 
-const JWT_SECRET = process.env.JWT_SECRET;
-
 const router = express.Router();
 
 router.post(
@@ -23,10 +21,7 @@ router.post(
   validationRequest,
   async (req: Request, res: Response) => {
     const { email, password } = req.body;
-    // const error = validationResult(req);
-    // if (!error.isEmpty()) {
-    //   throw new RequestValidationError(error.array());
-    // }
+    const JWT_SECRET = process.env.JWT_SECRET;
 
     const existingUser = await User.findOne({ email });
 
@@ -49,7 +44,7 @@ router.post(
         id: user.id,
         email: user.email,
       },
-      JWT_SECRET,
+      JWT_SECRET!,
     );
 
     //Store JWT in cookie session
@@ -59,7 +54,7 @@ router.post(
 
     console.log('JWT Cookie Set');
 
-    return res.send({ message: 'Email registered', user });
+    return res.status(201).send({ message: 'Email registered', user });
   },
 );
 

@@ -10,8 +10,6 @@ import { errorHandler } from './middlewares/errorHandler';
 import { NotFoundError } from './errors/notFoundError';
 import morgan from 'morgan';
 
-import mongoose from 'mongoose';
-
 const app = express();
 
 //add to trust https request being proxied over ingress-nginx
@@ -38,7 +36,7 @@ app.use(json());
 app.use(
   cookieSession({
     signed: false,
-    secure: true,
+    secure: process.env.NODE_ENV !== 'test',
   }),
 );
 
@@ -53,25 +51,4 @@ app.all('*', () => {
 
 app.use(errorHandler);
 
-const startApplication = async () => {
-  if (!process.env.JWT_SECRET) {
-    throw new Error('Env. var. JWT_SECRET missing');
-  }
-
-  try {
-    await mongoose.connect('mongodb://authentication-mongodb-srv:27017/authentication', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-    });
-    mongoose.set('debug', true);
-  } catch (error) {
-    console.error('MongoDB Connection Error: ', error);
-  }
-
-  app.listen(1000, () => {
-    console.info('Listening on port number: 1000');
-  });
-};
-
-startApplication();
+export { app };
