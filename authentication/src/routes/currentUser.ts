@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { currentUser } from '../middlewares/currentUser';
-import { authentication } from '../middlewares/authentication';
+import { currentUser } from '@zzelda/ticket-common';
+import { authentication } from '@zzelda/ticket-common';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 

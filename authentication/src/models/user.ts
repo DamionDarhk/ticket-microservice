@@ -41,7 +41,7 @@ const userSchema = new mongoose.Schema(
   //directly changing the output of object
   {
     toJSON: {
-      transform(doc, ret) {
+      transform(doc: any, ret: { id: any; _id: any; password: any; __v: any }) {
         ret.id = ret._id;
         delete ret._id;
         delete ret.password;
@@ -51,7 +51,7 @@ const userSchema = new mongoose.Schema(
   },
 );
 
-userSchema.pre('save', async function (done) {
+userSchema.pre('save', async function (done: () => void) {
   if (this.isModified('password')) {
     const hashed = await Password.toHash(this.get('password'));
     this.set('password', hashed);

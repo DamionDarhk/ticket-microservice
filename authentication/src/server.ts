@@ -6,8 +6,8 @@ import { currentUserRoute } from './routes/currentUser';
 import { loginRoute } from './routes/login';
 import { logoutRoute } from './routes/logout';
 import { registrationRoute } from './routes/registration';
-import { errorHandler } from './middlewares/errorHandler';
-import { NotFoundError } from './errors/notFoundError';
+import { errorHandler } from '@zzelda/ticket-common';
+import { NotFoundError } from '@zzelda/ticket-common';
 import morgan from 'morgan';
 
 const app = express();

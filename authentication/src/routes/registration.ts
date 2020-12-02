@@ -1,11 +1,10 @@
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
-import { RequestValidationError } from '../errors/requestValidationError';
 import { User } from '../models/user';
-import { BadRequestError } from '../errors/badRequestError';
-import { InternalServerError } from '../errors/internalServerError';
-import { validationRequest } from '../middlewares/validateRequest';
+import { BadRequestError } from '@zzelda/ticket-common';
+import { InternalServerError } from '@zzelda/ticket-common';
+import { validationRequest } from '@zzelda/ticket-common';
 
 const router = express.Router();
 
