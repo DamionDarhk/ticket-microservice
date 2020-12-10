@@ -18,8 +18,8 @@ const startApplication = async () => {
     console.error('MongoDB Connection Error: ', error);
   }
 
-  app.listen(1000, () => {
-    console.info('Listening on port number: 1000');
+  app.listen(2000, () => {
+    console.info('Listening on port number: 2000');
   });
 };
 

@@ -2,8 +2,10 @@ import express from 'express';
 require('express-async-errors');
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
-import { errorHandler } from '@zzelda/ticket-common';
-import { NotFoundError } from '@zzelda/ticket-common';
+import { errorHandler, NotFoundError, currentUser } from '@zzelda/ticket-common';
+import { addTicketRouter } from './routes/addTicket';
+import { showTicketRouter } from './routes/showTicket';
+import { updateTicketRouter } from './routes/updateTicket';
 import morgan from 'morgan';
 
 const app = express();
@@ -35,6 +37,12 @@ app.use(
     secure: process.env.NODE_ENV !== 'test',
   }),
 );
+
+app.use(currentUser);
+
+app.use(addTicketRouter);
+app.use(showTicketRouter);
+app.use(updateTicketRouter);
 
 app.all('*', () => {
   throw new NotFoundError();

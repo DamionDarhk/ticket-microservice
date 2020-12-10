@@ -14,6 +14,10 @@ spec:
             backend:
               serviceName: authentication-srv
               servicePort: 1000
+          - path: /api/tickets/?(.*)
+            backend:
+              serviceName: tickets-srv
+              servicePort: 2000
           - path: /?(.*)
             backend:
               serviceName: client-srv

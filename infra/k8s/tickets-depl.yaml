@@ -24,7 +24,7 @@ spec:
                 name: jwt-secret
                 key: JWT_SECRET
         ports:
-          - containerPort: 1000
+          - containerPort: 2000
 ---
 apiVersion: v1
 kind: Service
@@ -36,7 +36,7 @@ spec:
   ports:
   - name: tickets
     protocol: TCP
-    port: 1000
-    targetPort: 1000
+    port: 2000
+    targetPort: 2000
 
 
